@@ -6,7 +6,7 @@ import { ProductItem, ProductProps } from "../types/page";
 
 
 
-const Product: React.FC<ProductProps> = ({ token }) => {
+const Products: React.FC<ProductProps> = ({ token }) => {
   const [products, setProducts] = useState<ProductItem[]>([]);
 
   const productApi = async () => {
@@ -38,4 +38,4 @@ const Product: React.FC<ProductProps> = ({ token }) => {
   );
 };
 
-export default Product;
+export default Products;

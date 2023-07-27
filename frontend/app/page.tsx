@@ -3,7 +3,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
-import Product from "./products/page";
+import Products from "./Products/page";
 import { UserData } from "./types/page";
 
 const RegisterForm: React.FC = () => {
@@ -30,7 +30,7 @@ const RegisterForm: React.FC = () => {
         userData
       );
       console.log("Registration successful!", response.data);
-      router.push("/Product");
+      router.push("/Products");
     } catch (error) {
       console.error("Registration failed:", error);
     }
@@ -98,7 +98,7 @@ const RegisterForm: React.FC = () => {
 
             <Link
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full"
-              href="/Product"
+              href="/Products"
             >
               Sign Up
             </Link>
