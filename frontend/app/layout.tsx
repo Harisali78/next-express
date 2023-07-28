@@ -1,4 +1,4 @@
-
+import './globals.css'
 import { Inter } from "next/font/google";
 // import Navbar from "./Navbar/page";
 // import { useEffect, useState } from "react";

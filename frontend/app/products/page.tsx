@@ -26,6 +26,7 @@ const Products: React.FC<ProductProps> = ({ token }) => {
   return (
     <div>
       {/* <Navbar token={token} /> */}
+      <h1>Fetching Products</h1>
       <div>
         {products.map((item) => (
           <div key={item.id}>

@@ -1,112 +1,88 @@
 "use client";
-import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import axios from "axios";
-import Link from "next/link";
-import Products from "./Products/page";
-import { UserData } from "./types/page";
+import { useFormik } from "formik";
+import { LoginEntity, loginSchema } from "./Model/page";
+// import { User } from "./types/page";
 
-const RegisterForm: React.FC = () => {
-  const router = useRouter();
-  const [userData, setUserData] = useState<UserData>({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-  });
 
-  const changeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-  };
 
-  const handleRegistration = async (
-    e: FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    e.preventDefault();
+const initialValues = {
+  email: "",
+  password: "",
+};
+export default function Login() {
+  const onSubmit = async (values: LoginEntity) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/signup",
-        userData
+        "http://localhost:5000/api/v1/login",
+        values
       );
-      console.log("Registration successful!", response.data);
-      router.push("/Products");
+      console.log("User login successfully!", response.data);
+    
     } catch (error) {
-      console.error("Registration failed:", error);
+      console.error("Login failed:", error);
     }
   };
+    const router = useRouter();
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+  useFormik({
+    initialValues: initialValues,
+    validationSchema: loginSchema,
+    onSubmit,
+  });
 
   return (
     <div>
-      <h1 className="text-4xl border">Hey</h1>
-      <div className="bg-gray-100 min-h-screen py-8">
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-3xl font-bold text-center mb-8">Register</h1>
-          <form onSubmit={handleRegistration}>
-            <div className="mb-4">
-              <label htmlFor="first_name" className="block font-bold mb-1">
-                First Name:
-              </label>
-              <input
-                type="text"
-                id="first_name"
-                name="first_name"
-                value={userData.first_name}
-                onChange={changeHandler}
-                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="last_name" className="block font-bold mb-1">
-                Last Name:
-              </label>
-              <input
-                type="text"
-                id="last_name"
-                name="last_name"
-                value={userData.last_name}
-                onChange={changeHandler}
-                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block font-bold mb-1">
-                Email:
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={userData.email}
-                onChange={changeHandler}
-                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="password" className="block font-bold mb-1">
-                Password:
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={userData.password}
-                onChange={changeHandler}
-                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
-              />
-            </div>
-
-            <Link
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full"
-              href="/Products"
-            >
-              Sign Up
-            </Link>
-          </form>
+      <h2 className="text-3xl font-bold text-center mb-10 mt-10">Login Page</h2>
+      <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8">
+        <div className="mb-4">
+          <label htmlFor="email" className="block font-bold mb-1">
+            Email:
+          </label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+          />
+          {errors.email && touched.email ? <p>{errors.email}</p> : null}
         </div>
-      </div>
+        <div className="mb-4">
+          <label htmlFor="password" className="block font-bold mb-1">
+            Password:
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+          />
+          {errors.password && touched.password ? (
+            <p>{errors.password}</p>
+          ) : null}
+        </div>
+        <button
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full"
+          type="submit"
+        >
+          Log In
+        </button>
+        {/* <button
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full"
+          type="submit"
+          onClick={() => router.push("/Register")}
+        >
+          Sign Up
+        </button> */}
+      </form>
     </div>
   );
-};
-
-export default RegisterForm;
+}
