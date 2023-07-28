@@ -1,14 +1,8 @@
-import './globals.css'
+import '../styles/globals.css'
 import { Inter } from "next/font/google";
-// import Navbar from "./Navbar/page";
-// import { useEffect, useState } from "react";
-// import axios from "axios";
+
 
 const inter = Inter({ subsets: ["latin"] });
-
-// interface RootLayoutProps {
-//   children: React.ReactNode;
-// }
 
 export const metadata = {
   title: "Protected Routes",
@@ -20,27 +14,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }){
-  // const [hasToken, setHasToken] = useState(false);
-
-  // const logoutUser = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost:8080/api/v1/logout");
-  //     console.log("response", response);
-  //     setHasToken(response.data.token);
-  //   } catch (error) {
-  //     console.error("Error during logout:", error);
-  //   }
-  // };
-  
-  // useEffect(() => {
-  //   logoutUser();
-  // }, []);
 
   return (
     <html lang="en">
       <body className={inter.className}>
         <div>
-          {/* <Navbar hasToken={hasToken} onLogout={logoutUser} /> */}
           <main>{children}</main>
         </div>
       </body>
