@@ -1,9 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, ChangeEvent, FormEvent } from "react";
+import { User } from "../types/page"
 import axios from "axios";
-import {User} from "../types/page"
-// import Navbar from "../navbar/navbar";
 
 
 export default function Login() {
@@ -27,7 +26,7 @@ export default function Login() {
       password: user.password,
     };
     try {
-      const response = await axios.post("http://localhost:8080/api/v1/login", createdUser);
+      const response = await axios.post("http://localhost:5000/api/v1/login", createdUser);
       console.log(response.data.token);
 
       router.push("/Products");

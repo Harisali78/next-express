@@ -2,11 +2,10 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import Link from "next/link";
-import Products from "./Products/page";
 import { UserData } from "./types/page";
+import Link from "next/link";
 
-const RegisterForm: React.FC = () => {
+const RegisterForm = () => {
   const router = useRouter();
   const [userData, setUserData] = useState<UserData>({
     first_name: "",
@@ -17,6 +16,7 @@ const RegisterForm: React.FC = () => {
 
   const changeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
+    console.log(name, value)
     setUserData({ ...userData, [name]: value });
   };
 
@@ -26,11 +26,11 @@ const RegisterForm: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/signup",
+        "http://localhost:5000/api/v1/register",
         userData
       );
       console.log("Registration successful!", response.data);
-      router.push("/Products");
+      // router.push("/Products");
     } catch (error) {
       console.error("Registration failed:", error);
     }
@@ -38,7 +38,6 @@ const RegisterForm: React.FC = () => {
 
   return (
     <div>
-      <h1 className="text-4xl border">Hey</h1>
       <div className="bg-gray-100 min-h-screen py-8">
         <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
           <h1 className="text-3xl font-bold text-center mb-8">Register</h1>
@@ -95,13 +94,13 @@ const RegisterForm: React.FC = () => {
                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
               />
             </div>
-
-            <Link
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full"
-              href="/Products"
+            <button
+              className="bg-black text-white py-1 px-2 rounded"
+              type="submit"
             >
               Sign Up
-            </Link>
+            </button>
+            <p>Already have account? Please <Link href='/login'>login</Link></p>
           </form>
         </div>
       </div>
