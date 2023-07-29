@@ -11,7 +11,7 @@ const Products: React.FC<ProductProps> = ({ token }) => {
 
   const productApi = async () => {
     try {
-      const show = await axios.get("http://localhost:8080/api/v1");
+      const show = await axios.get("http://localhost:8080/api/v1/products");
       setProducts(show.data.data);
       console.log(show.data.data);
     } catch (error) {

@@ -3,8 +3,9 @@ import { useRouter } from "next/navigation";
 import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
+import Link from "next/link";
 import { LoginEntity, loginSchema } from "./Model/page";
-// import { User } from "./types/page";
+
 
 
 
@@ -20,7 +21,7 @@ export default function Login() {
         values
       );
       console.log("User login successfully!", response.data);
-    
+      router.push("/Products");
     } catch (error) {
       console.error("Login failed:", error);
     }
@@ -75,13 +76,18 @@ export default function Login() {
         >
           Log In
         </button>
-        {/* <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full"
+        <button
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mr-10"
           type="submit"
           onClick={() => router.push("/Register")}
         >
           Sign Up
-        </button> */}
+        </button>
+        <p className="mt-5 font-semibold">Forgot Password?
+        <Link href="/PasswordReset">
+            Click Here! 
+        </Link>
+        </p>
       </form>
     </div>
   );
