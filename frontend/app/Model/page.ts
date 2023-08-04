@@ -21,6 +21,17 @@ export const loginSchema = Yup.object({
   email: Yup.string().email().required("Please Enter Your Email"),
   password: Yup.string().min(8).required("Enter a 8 Digit Valid Password"),
 })
- 
+export interface AddProducts{
+  title?: String,
+  description?: String,
+  price?: number,
+  review?: String
+}
+export const AddProductsSchema = Yup.object({
+  title: Yup.string().min(5).max(50).required("Please Enter a title of a product"),
+  description: Yup.string().min(10).max(100).required("Pleae Enter description about your product"),
+  price: Yup.number().min(2).max(30).required("Enter the price of a product"),
+  review: Yup.string().min(10).max(100).required("Write Reviews about the product"),
+})
 
 

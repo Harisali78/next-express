@@ -4,7 +4,9 @@ import React from 'react'
 
 const ForgotPassword = () => {
   return (
-    <div>page</div>
+    <div>
+      
+    </div>
   )
 }
 
