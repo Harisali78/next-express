@@ -8,7 +8,7 @@ const Removebtn = ({id}) => {
 const removeProduct = async()=>{
   const confirmed = confirm("Are you Sure");
   if(confirmed){
-   const res= await fetch(`http://localhost:5000/api/v1/product?id=${id}`,{
+   const res= await fetch(`http://localhost:5000/api/v1/product/${id}`,{
       method:"DELETE",
     });
     if(res.ok){

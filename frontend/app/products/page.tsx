@@ -1,47 +1,74 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
+import Removebtn from "../Removebtn/page";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ProductItem, ProductProps } from "../types/page";
-import ProductList from "../ProductList/page";
-// import Navbar from "../navbar/navbar";
+import { HiPencilAlt } from "react-icons/hi";
+import axios from "axios";
+import ReactStars from 'react-stars'
+import Search from "../Search/page";
+import queryString from "query-string";
 
 
 
-const Products: React.FC<ProductProps> = ({ token }) => {
-  // const [products, setProducts] = useState<ProductItem[]>([]);
-
-  // const productApi = async () => {
-  //   try {
-  //     const show = await axios.get("http://localhost:5000/api/v1/products");
-  //     setProducts(show.data.data);
-  //     console.log(show.data.data);
-  //   } catch (error) {
-  //     console.error("Error fetching products:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   productApi();
-  // }, []);
+const Products = () => {
+  const [products, setProducts] = useState([]);
+  const getProducts = async () => {
+    // const urlParams = {
+    //   keyword: searchParams.keyword
+    // }
+    // const searchQuery = queryString.stringify(urlParams);
+    // console.log(searchQuery);
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/v1/products`
+      );
+      const data = await response;
+      setProducts(data.data.data);
+      console.log(data);
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
+  useEffect(() => {
+    getProducts();
+  }, []);
 
   return (
-    <div>
-      {/* <Navbar token={token} /> */}
-      {/* <div>
-        {products.map((item) => (
-          <div key={item.id}>
-            <h3>{item.title}</h3>
-            <h4>{item.message}</h4>
-          </div>
-        ))}
-      </div> */}
-      <nav className="flex justify-between items-center bg-blue-600 px-8 py-3">
-        <h3 className="text-white font-semibold">Products Details</h3>
-        <Link className="bg-white p-2"   href={"/AddProduct"}>Add Product</Link>
+    <>
+     <nav className="flex justify-between items-center bg-blue-600 px-8 py-3">
+        <h2 className="text-white font-semibold">Products Details</h2>
+        <Link className="bg-white p-2 rounded-full"href={"/AddProduct"}>Add Product</Link>
+        <Link className="bg-white p-2 rounded-full" href={"/"}>Home</Link>
       </nav>
-      <ProductList/>
-    </div>
+      <Search/>
+      {products.map((t:any) => (
+        <div className="p-4 border-slate-300 my-3 flex justify-between gap-5 items-start">
+          <div>
+            <h2 className="font-semibold text-2xl">{t.title}</h2>
+            <div>{t.description}</div>
+            <h3>{t.price}</h3>
+            <div>
+              <ReactStars
+                count={5}
+                value={t.rating}
+                size={24}
+                color2={'#ffd700'}
+                // edit={false}
+              />
+            </div>
+            <h4>{t.review}</h4>
+            <img src={t.image} alt="Not Found" height="200" width="300"/>
+          </div>
+          <div className="flex gap-2">
+            <Removebtn id={t._id} />
+            <Link href={`/EditProductform `}>
+              <HiPencilAlt size={24} />
+            </Link>
+          </div>
+        </div>
+      ))}
+    </>
   );
 };
 

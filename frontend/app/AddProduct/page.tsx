@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import { AddProducts, AddProductsSchema } from '../Model/page';
 import { useRouter } from 'next/navigation';
+import { string } from 'yup';
  
 // const handleImageChange = (e: any) => {
 //   const file = e.target.files[0];
@@ -22,7 +23,7 @@ import { useRouter } from 'next/navigation';
 const initialValues = {
     title: "",
     description: "",
-    price: 0,
+    price: "",
     review: "",
   };
 
@@ -48,6 +49,7 @@ const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
         }
       },
     });
+ 
   return (
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
         <h1 className="text-3xl font-bold text-center mb-8">Add a Product</h1>
@@ -87,9 +89,9 @@ const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
               Price:
             </label>
             <input
-              type="Price"
-              name="Price"
-              id="Price"
+              type="text"
+              name="price"
+              id="price"
               value={values.price}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -102,7 +104,9 @@ const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
            <ReactStars
            count={5}
            size={24}
-           color2={'#ffd700'} />
+           value={string}
+           color2={'#ffd700'}
+           />
            </div>
            <div className="mb-4">
             <label htmlFor="review" className="block font-bold mb-1">
@@ -134,7 +138,6 @@ const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mt-2"
             type="submit"
-            onClick={() => router.push("/Products")}
           >
             Add Product
           </button>
