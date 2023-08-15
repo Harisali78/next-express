@@ -14,15 +14,22 @@ const initialValues = {
   password: "",
 };
 export default function Login() {
+  const [error, setError] = useState('')
   const onSubmit = async (values: LoginEntity) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/login",
         values
       );
+      const token = response.data.token
+      localStorage.setItem('token', token)
       console.log("User login successfully!", response.data);
       router.push("/Products");
-    } catch (error) {
+    } catch (error:any) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message)
+      
+    }
       console.error("Login failed:", error);
     }
   };
@@ -33,6 +40,7 @@ export default function Login() {
     validationSchema: loginSchema,
     onSubmit,
   });
+  
 
   return (
     <div>
@@ -84,7 +92,7 @@ export default function Login() {
           Sign Up
         </button>
         <p className="mt-5 font-semibold">Forgot Password?
-        <Link href="/PasswordReset">
+        <Link href="/ForgotPassword">
             Click Here! 
         </Link>
         </p>

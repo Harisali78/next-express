@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRouter, useParams } from 'next/navigation'
@@ -20,7 +21,8 @@ const EditProducts = () => {
     const router = useRouter();
     const params = useParams();
     const id = params.id;
-    const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } =
     useFormik({
       initialValues: initialValues,
       validationSchema: AddProductsSchema,
@@ -39,7 +41,19 @@ const EditProducts = () => {
     }
     );
     useEffect(() => {
-      
+      const fetchProductData = async ()=>{
+        try {
+            const response = await axios.get(`http://localhost:5000/api/v1/product/${id}`)
+            const productData = response.data.data;
+            setValues(productData);
+            console.log('field values' ,productData)
+        } catch (error) {
+            console.log(error);
+        }
+      };
+      if(id){
+        fetchProductData()
+      }
     }, [])
     
     return (
@@ -126,7 +140,6 @@ const EditProducts = () => {
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mt-2"
               type="submit"
-              // onClick={() => router.push("/Products")}
             >
               Update Product
             </button>

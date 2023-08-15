@@ -8,10 +8,22 @@ import axios from "axios";
 import ReactStars from 'react-stars'
 import Search from "../Search/page";
 import queryString from "query-string";
+import { useParams, useRouter } from "next/navigation";
+
 
 
 
 const Products = () => {
+  const [currentpage, setCurrentpage] = useState(1);
+  const [totalpage, setTotalpage] = useState(1)
+  const router = useRouter();
+  const onEditClick = (productId: string | undefined) => {
+    router.push(`/${productId}/EditProduct`)
+}
+const onPageChange = (page: number) => {
+  setCurrentpage(page);
+  getProducts();
+};
   const [products, setProducts] = useState([]);
   const getProducts = async () => {
     // const urlParams = {
@@ -21,10 +33,11 @@ const Products = () => {
     // console.log(searchQuery);
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/v1/products`
+        `http://localhost:5000/api/v1/products?page=${currentpage}`
       );
       const data = await response;
       setProducts(data.data.data);
+      setTotalpage(data.data.totalPages);
       console.log(data);
     } catch (error) {
       console.error("Login failed:", error);
@@ -32,7 +45,8 @@ const Products = () => {
   };
   useEffect(() => {
     getProducts();
-  }, []);
+
+  }, [currentpage]);
 
   return (
     <>
@@ -61,11 +75,27 @@ const Products = () => {
             <img src={t.image} alt="Not Found" height="200" width="300"/>
           </div>
           <div className="flex gap-2">
-            <Removebtn id={t._id} />
-            <Link href={`/EditProductform `}>
+             <Removebtn id={t._id} />
+             {/* <Link href={`/ `}>
               <HiPencilAlt size={24} />
-            </Link>
+             </Link>  */}
+             
+         <button  className='flex gap-2' onClick={() =>{ onEditClick(t._id) }}> 
+         <HiPencilAlt size={24} />
+        </button>
           </div>
+          <div className="flex justify-end m-2">
+                {Array.from({ length: totalpage }, (_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => onPageChange(index + 1)}
+                        className={`mx-1 px-3 py-1 rounded ${currentpage === index + 1 ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-700"
+                            }`}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+            </div>
         </div>
       ))}
     </>
