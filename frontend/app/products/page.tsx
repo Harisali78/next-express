@@ -9,6 +9,7 @@ import ReactStars from 'react-stars'
 import Search from "../Search/page";
 import queryString from "query-string";
 import { useParams, useRouter } from "next/navigation";
+import { AddProducts } from "../Model/page";
 
 
 
@@ -79,7 +80,11 @@ const onPageChange = (page: number) => {
          <HiPencilAlt size={24} />
         </button>
           </div>
-          <div className="flex justify-end m-2">
+        
+        </div>
+
+      ))}
+        <div className="flex justify-end m-2">
                 {Array.from({ length: totalpage }, (_, index) => (
                     <button
                         key={index}
@@ -91,8 +96,6 @@ const onPageChange = (page: number) => {
                     </button>
                 ))}
             </div>
-        </div>
-      ))}
     </>
   );
 };
