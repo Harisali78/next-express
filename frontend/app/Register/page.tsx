@@ -1,8 +1,6 @@
 "use client";
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { UserData } from "../types/page";
 import { useFormik } from "formik";
 import { UserEntity, signupSchema } from "../Model/page";
 
@@ -27,7 +25,7 @@ const RegisterForm: React.FC = () => {
             values
           );
           console.log("Registration successful!", response.data);
-          router.push("/Products");
+          router.push("/");
         } catch (error) {
           console.error("Registration failed:", error);
         }

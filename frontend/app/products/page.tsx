@@ -12,7 +12,6 @@ import { useParams, useRouter } from "next/navigation";
 
 
 
-
 const Products = () => {
   const [currentpage, setCurrentpage] = useState(1);
   const [totalpage, setTotalpage] = useState(1)
@@ -76,10 +75,6 @@ const onPageChange = (page: number) => {
           </div>
           <div className="flex gap-2">
              <Removebtn id={t._id} />
-             {/* <Link href={`/ `}>
-              <HiPencilAlt size={24} />
-             </Link>  */}
-             
          <button  className='flex gap-2' onClick={() =>{ onEditClick(t._id) }}> 
          <HiPencilAlt size={24} />
         </button>
