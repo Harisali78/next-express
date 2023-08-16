@@ -6,8 +6,8 @@ const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleForgotPassword = async (e) => {
-    e.preventDefault();
+  const handleForgotPassword = async () => {
+    // e.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/forgot-password",
@@ -20,7 +20,7 @@ const ForgotPasswordPage = () => {
   };
   return (
     <div>
-      <form className="max-w-md mx-auto mt-8" onSubmit={handleForgotPassword}>
+      {/* <form className="max-w-md mx-auto mt-8" onSubmit={handleForgotPassword}> */}
         <h1 className="text-3xl font-bold text-center mb-10 mt-10">
           Forgot Password
         </h1>
@@ -35,12 +35,12 @@ const ForgotPasswordPage = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <button
-          type="submit"
+          onClick={handleForgotPassword}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mt-4"
         >
           Send Reset Email
         </button>
-      </form>
+      {/* </form> */}
       <p>{message}</p>
     </div>
   );
