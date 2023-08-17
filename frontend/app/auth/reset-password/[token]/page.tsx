@@ -11,7 +11,7 @@ const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleResetPassword = async (e:any) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
@@ -42,7 +42,7 @@ const ResetPasswordPage = () => {
           className='  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"'
         />
         <button
-        //  onSubmit={handleResetPassword}
+         onSubmit={handleResetPassword}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mt-4"
         >
           Reset Password

@@ -92,7 +92,7 @@ export default function Login() {
           Sign Up
         </button>
         <p className="mt-5 font-semibold">Forgot Password?
-        <Link href="/ForgotPassword">
+        <Link href="/auth/ForgotPassword">
             Click Here! 
         </Link>
         </p>
