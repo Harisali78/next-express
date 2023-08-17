@@ -1,12 +1,12 @@
 const productModel = require("../models/productModel");
-exports.getProducts = async (req, res) => {
-  const data = await productModel.find();
-  res.status(200).json({
-    success: true,
-    data,
-  });
-};
-exports.createProduct = (req, res) => {
+// exports.getProducts = async (req, res) => {
+//   const data = await productModel.find();
+//   res.status(200).json({
+//     success: true,
+//     data,
+//   });
+// };
+const createProduct = (req, res) => {
   console.log(req)
   const data = productModel.create(req.body);
   res.status(201).json({
@@ -15,7 +15,7 @@ exports.createProduct = (req, res) => {
     data,
   });
 };
-exports.productDetails = async (req, res) => {
+const getProducts = async (req, res) => {
   // const id = req.params.id;
   // const data = await productModel.findById(id);
   // res.status(200).json({
@@ -55,7 +55,7 @@ exports.productDetails = async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
-exports.updateProduct = async (req, res) => {
+const updateProduct = async (req, res) => {
   const id = req.params.id;
   const body = req.body;
   const product = await productModel.findByIdAndUpdate(id, body, { new: true });
@@ -65,7 +65,7 @@ exports.updateProduct = async (req, res) => {
     product,
   });
 };
-exports.deletedProduct = async (req, res) => {
+const deletedProduct = async (req, res) => {
   const id = req.params.id;
   const product = await productModel.findByIdAndDelete(id);
   res.status(200).json({
@@ -74,7 +74,7 @@ exports.deletedProduct = async (req, res) => {
   });
 };
 
-exports.authMiddleware = (req, res, next) => {
+const authMiddleware = (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
@@ -90,3 +90,10 @@ exports.authMiddleware = (req, res, next) => {
   }
 };
 
+
+module.exports = {
+  getProducts,
+  createProduct,
+  deletedProduct,
+  updateProduct
+}

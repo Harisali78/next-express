@@ -1,6 +1,7 @@
 const authModel = require("../models/authModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require('nodemailer')
 const register = async (req, res) => {
     const { first_name, last_name, email, password } = req.body;
     try {
@@ -74,7 +75,7 @@ const sendResetPasswordEmail = async (email, resetToken) => {
             },
         });
 
-        const resetLink = `http://localhost:3000/auth/reset-password/${resetToken}`;
+        const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
 
         const mailOptions = {
             from: process.env.GMAIL_USERNAME,
@@ -112,11 +113,54 @@ const forgotPassword = async (req, res) => {
         });
     }
 }
-
+const resetPassword = async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body
+    try {
+        const user = await authModel.findOne({ resetPasswordToken: token, resetPasswordTokenExpiry: { $gt: Date.now() } });
+        if (!user) {
+            return res.status(400).json({ message: "Invalid or expired token" });
+        }
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+        user.resetPasswordToken = null;
+        user.resetPasswordTokenExpiry = null;
+        await user.save();
+        // Send a password reset success notification to the user's email
+        const resetEmail = user.email;
+        const mailOptions = {
+            from: process.env.GMAIL_USERNAME,
+            to: resetEmail,
+            subject: "Password Reset Successful",
+            html: `<p>Hello,</p><p>Your password has been successfully reset. You can now log in with your new password.</p>`,
+        };
+        // Replace the following email configuration with your SMTP settings
+        const transporter = nodemailer.createTransport({
+            // host: "smtp.example.com",
+            service:'gmail',
+            port: 587,
+            secure: false,
+            auth: {
+                user: process.env.GMAIL_USERNAME,
+                pass: process.env.GMAIL_PASSWORD,
+            },
+        });
+        await transporter.sendMail(mailOptions);
+        console.log("Reset Token:", token);
+        console.log(`Password reset success email sent to ${resetEmail}`);
+        res.status(200).json({ message: "Password reset successful" });
+    } catch (error) {
+        res.status(500).json({
+            message: "Internal Server Error",
+            error,
+        });
+    }
+}
 const logout = (req, res) => {
     const token = req.headers.authorization;
     console.log(req.headers)
     res.json({ token });
 };
 
-module.exports = { register, login, logout };
+module.exports = { register, login, logout, forgotPassword, resetPassword };
