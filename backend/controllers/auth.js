@@ -75,7 +75,7 @@ const sendResetPasswordEmail = async (email, resetToken) => {
             },
         });
 
-        const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+        const resetLink = `http://localhost:3000/auth/reset-password/${resetToken}`;
 
         const mailOptions = {
             from: process.env.GMAIL_USERNAME,
