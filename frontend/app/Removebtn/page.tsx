@@ -1,29 +1,25 @@
-"use client";
-import {useRouter } from 'next/navigation';
-import React from 'react'
-import { HiOutlineTrash } from 'react-icons/hi'
+// "use client";
+import axios from 'axios';
+// import {useRouter } from 'next/navigation';
+// import React from 'react'
+// import { HiOutlineTrash } from 'react-icons/hi'
 
-const Removebtn = ({id}) => {
-  const router = useRouter();
-const removeProduct = async()=>{
+// const Removebtn = ({id}) => {
+//   const router = useRouter();
+export const removeProduct = async(id)=>{
   const confirmed = confirm("Are you Sure");
   if(confirmed){
-   const res= await fetch(`http://localhost:5000/api/v1/product/${id}`,{
-      method:"DELETE",
-    });
-    if(res.ok){
-      router.refresh();
-    }
+  const res = await axios.delete(`http://localhost:5000/api/v1/product/${id}`)
   }
 };
 
-  return (
-    <div>
-        <button onClick={removeProduct} className='text-red-600'>
-            <HiOutlineTrash size={24}/>
-        </button>
-    </div>
-  )
-}
+//   return (
+//     <div>
+//         <button onClick={removeProduct} className='text-red-600'>
+//             <HiOutlineTrash size={24}/>
+//         </button>
+//     </div>
+//   )
+// }
 
-export default Removebtn;
+// export default Removebtn;

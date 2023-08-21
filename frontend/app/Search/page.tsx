@@ -4,14 +4,14 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const Search = () => {
-  const [keyword, setKeyword] = useState("");
+  const [query, setQuery] = useState("");
 
   const router = useRouter();
 
-  const submitHandler = () => {
-
-    if (keyword) {
-      router.push(`/Products?keyword=${keyword}`);
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (query) {
+      router.push(`/Products?keyword=${query}`);
     } else {
     //   router.push("/Products");
     }
@@ -26,8 +26,8 @@ const Search = () => {
         className="flex-grow appearance-none border border-gray-200 bg-gray-100 rounded-md ml-5 py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 mt-5"
         type="text"
         placeholder="Enter your keyword"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
         required
       />
       <button

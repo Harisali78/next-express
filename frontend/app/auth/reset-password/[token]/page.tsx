@@ -11,12 +11,12 @@ const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleResetPassword = async (e) => {
-    e.preventDefault();
+  const handleResetPassword = async () => {
+    // e.preventDefault();
     try {
       const response = await axios.post(
         `http://localhost:5000/api/v1/reset-password/${token}`,
-        { password }  
+        { password }
       );
       router.push('/')
       setMessage(response.data.message);
@@ -27,7 +27,7 @@ const ResetPasswordPage = () => {
 
   return (
     <div>
-      <form className="max-w-md mx-auto mt-8" onSubmit={handleResetPassword}>
+      {/* <form className="max-w-md mx-auto mt-8" onSubmit={handleResetPassword}> */}
         <h1 className="text-3xl font-bold text-center mb-10 mt-10">
           Reset Password
         </h1>
@@ -47,7 +47,7 @@ const ResetPasswordPage = () => {
         >
           Reset Password
         </button>
-      </form>
+      {/* </form> */}
       <p>{message}</p>
     </div>
   );
