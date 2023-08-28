@@ -16,44 +16,39 @@ exports.createProduct = (req, res) => {
   });
 };
 exports.productDetails = async (req, res) => {
-  // const id = req.params.id;
-  // const data = await productModel.findById(id);
-  // res.status(200).json({
-  //   success: true,
-  //   data,
-  // });
   const page = parseInt(req.query.page) || 1;
-    const pageSize = 5;
-    const skip = (page - 1) * pageSize;
+  const pageSize = 5;
+  const skip = (page - 1) * pageSize;
 
-    const searchQuery = req.query.search || ''
-    try {
+  const searchQuery = req.query.search || ''
 
-        let productQuery = productModel.find()
-        if (searchQuery) {
-            const searchRegex = new RegExp(searchQuery, 'i')
-            productQuery = productQuery.where({ title: { $regex: searchRegex } })
-        }
+  const minPrice = parseFloat(req.query.minPrice) || 0;
+  const maxPrice = parseFloat(req.query.maxPrice) || Number.MAX_VALUE;
+  const minRating = parseFloat(req.query.minRating) || 0;
+  const maxRating = parseFloat(req.query.maxRating) || 5;
+  try {
 
-        const data = await productQuery.sort({ createdAt: -1 }).skip(skip).limit(pageSize)
-        const totalProducts = await productModel.countDocuments();
-        // const data = await productModel.find()
-        //     .sort({ createdAt: -1 })
-        //     .skip(skip)
-        //     .limit(pageSize);
-
-        // const totalProducts = await productModel.countDocuments();
-
-        res.status(200).json({
-            success: true,
-            data,
-            page,
-            totalPages: Math.ceil(totalProducts / pageSize)
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: 'Internal server error' });
+    let productQuery = productModel.find()
+      .where('price').gte(minPrice).lte(maxPrice)
+      .where('rating').gte(minRating).lte(maxRating)
+    if (searchQuery) {
+      const searchRegex = new RegExp(searchQuery, 'i')
+      productQuery = productQuery.where({ title: { $regex: searchRegex } })
     }
+
+    const data = await productQuery.sort({ createdAt: -1 }).skip(skip).limit(pageSize)
+    const totalProducts = await productModel.countDocuments();
+
+    res.status(200).json({
+      success: true,
+      data,
+      page,
+      totalPages: Math.ceil(totalProducts / pageSize)
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
 };
 exports.updateProduct = async (req, res) => {
   const id = req.params.id;
