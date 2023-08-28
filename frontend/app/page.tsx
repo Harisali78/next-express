@@ -1,46 +1,58 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { LoginEntity, loginSchema } from "./Model/page";
-
-
-
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const initialValues = {
   email: "",
   password: "",
 };
 export default function Login() {
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
+  const session = useSession();
+
+  // if (session.status === "loading") {
+  //   return <p>loading...</p>;
+  // }
+  // if (session.status === "authenticated") {
+  //   return (
+  //     <button onClick={() => signOut("google")}>Logout with google</button>
+  //   );
+  // }
+  // if(session.status === "unauthenticated"){
+  //   return <p>user unauthenticated</p>
+  // }
+
+  console.log(session);
+
   const onSubmit = async (values: LoginEntity) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/login",
         values
       );
-      const token = response.data.token
-      localStorage.setItem('token', token)
+      const token = response.data.token;
+      localStorage.setItem("token", token);
       console.log("User login successfully!", response.data);
       router.push("/Products");
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response && error.response.data.message) {
-        setError(error.response.data.message)
-      
-    }
+        setError(error.response.data.message);
+      }
       console.error("Login failed:", error);
     }
   };
-    const router = useRouter();
+  const router = useRouter();
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-  useFormik({
-    initialValues: initialValues,
-    validationSchema: loginSchema,
-    onSubmit,
-  });
-  
+    useFormik({
+      initialValues: initialValues,
+      validationSchema: loginSchema,
+      onSubmit,
+    });
 
   return (
     <div>
@@ -85,17 +97,17 @@ export default function Login() {
           Log In
         </button>
         <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mr-10"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full ml-3"
           type="submit"
           onClick={() => router.push("/Register")}
         >
           Sign Up
         </button>
-        <p className="mt-5 font-semibold">Forgot Password?
-        <Link href="/auth/ForgotPassword">
-            Click Here! 
-        </Link>
+        <p className="mt-5 font-semibold">
+          Forgot Password?
+          <Link href="/auth/ForgotPassword">Click Here! </Link>
         </p>
+        <button onClick={() => signIn("google")} className=" bg-indigo-600 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mr-10 mt-2 ">Login with google</button>
       </form>
     </div>
   );

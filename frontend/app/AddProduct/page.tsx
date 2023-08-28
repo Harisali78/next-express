@@ -1,12 +1,11 @@
 "use client";
 import React, { useEffect } from "react";
 import { useState } from "react";
-// import ReactStars from 'react-stars'
+import ReactStars from "react-stars";
 import axios from "axios";
 import { useFormik } from "formik";
 import { AddProducts, AddProductsSchema } from "../Model/page";
 import { useRouter } from "next/navigation";
-
 
 const initialValues = {
   title: "",
@@ -14,45 +13,51 @@ const initialValues = {
   price: "",
   review: "",
   rating: 0,
-  image:""
+  image: "",
 };
 
 const AddProduct: React.FC = () => {
   const [base64Image, setBase64Image] = useState(null);
   const handleImageChange = (e: any) => {
-      const file = e.target.files[0];
-      if (file) {
-          const reader = new FileReader();
-          reader.onload = (event: any) => {
-              setBase64Image(event.target.result);
-              setFieldValue('image', event.target.result);
-          };
-          reader.readAsDataURL(file);
-      }
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        setBase64Image(event.target.result);
+        setFieldValue("image", event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
- 
+
   const router = useRouter();
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit,setFieldValue } =
-    useFormik({
-      initialValues: initialValues,
-      validationSchema: AddProductsSchema,
-      onSubmit: async (values: AddProducts) => {
-        try {
-          const response = await axios.post(
-            "http://localhost:5000/api/v1/createProduct",
-            values
-          );
-          console.log("Product Created successfully!", response.data);
-          router.push("/Products");
-        } catch (error) {
-          console.error("Product is not created:", error);
-        }
-      },
-    });
-    useEffect(() => {
-    console.log('values', values)
-    }, [values, ])
-    
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    setFieldValue,
+  } = useFormik({
+    initialValues: initialValues,
+    validationSchema: AddProductsSchema,
+    onSubmit: async (values: AddProducts) => {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/v1/createProduct",
+          values
+        );
+        console.log("Product Created successfully!", response.data);
+        router.push("/Products");
+      } catch (error) {
+        console.error("Product is not created:", error);
+      }
+    },
+  });
+  useEffect(() => {
+    console.log("values", values);
+  }, [values]);
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
@@ -105,30 +110,14 @@ const AddProduct: React.FC = () => {
           />
           {errors.price && touched.price ? <p>{errors.price}</p> : null}
         </div>
-          <div className="mb-4">
-          <label htmlFor="rating" className="block font-bold mb-1">
-            Rating:
-          </label>
-          <input
-            type="number"
-            name="rating"
-            id="rating"
-            value={values.rating}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+
+        <div className="mb-4">
+          <h2 className="block font-bold mb-1">
+            Ratings
+           </h2>
+          <ReactStars count={5} size={24} value={values.rating} onChange={(rating)=>setFieldValue('rating', rating)} color2={"#ffd700"} 
           />
-          {errors.rating && touched.rating ? <p>{errors.rating}</p> : null}
         </div>
-        {/* <div className="mb-4">
-           <h2 className="block font-bold mb-1">Ratings </h2>
-           <ReactStars
-           count={5}
-           size={24}
-           value={number}
-           color2={'#ffd700'}
-           />
-           </div> */}
         <div className="mb-4">
           <label htmlFor="review" className="block font-bold mb-1">
             Review:
@@ -149,16 +138,16 @@ const AddProduct: React.FC = () => {
             Upload Image:
           </label>
           <input
-                type="file"
-                name="image"
-                id="image"
-                onChange={handleImageChange}
-               />
-                {base64Image && (
-                <div className="mt-3">
-                <img src={base64Image} alt="Selected" height="200" width="300" />
-                </div>
-                )}
+            type="file"
+            name="image"
+            id="image"
+            onChange={handleImageChange}
+          />
+          {base64Image && (
+            <div className="mt-3">
+              <img src={base64Image} alt="Selected" height="200" width="300" />
+            </div>
+          )}
         </div>
 
         <button
