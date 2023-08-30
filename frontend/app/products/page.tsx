@@ -14,9 +14,7 @@ import { AddProducts } from "../Model/page";
 const Products = () => {
   const [currentpage, setCurrentpage] = useState(1);
   const [totalpage, setTotalpage] = useState(1);
-  const [query, setQuery] = useState('');
-  const [price, setPrice] = useState('');
-  const [rating, setRating] = useState('');  
+  const [query, setQuery] = useState('');  
   const [products, setProducts] = useState([]);
   const router = useRouter();
 
@@ -105,46 +103,6 @@ const Products = () => {
    >
        Search
    </button>
-   {/* <div className="flex items-center gap-4">
-          <label htmlFor="priceRange" className="text-gray-600">
-            Price Range:
-          </label>
-          <input
-            type="range"
-            id="priceRange"
-            min="0"
-            max="1000"
-            step="10"
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
-            className="w-36"
-          />
-          <input
-            type="range"
-            id="priceRange"
-            min="0"
-            max="1000"
-            step="10"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
-            className="w-36"
-          />
-        </div>
-        <div className="flex items-center gap-4">
-          <label htmlFor="ratingRange" className="text-gray-600">
-            Rating range:
-          </label>
-          <input
-            type="range"
-            id="ratingRange"
-            min="0"
-            max="5"
-            step="0.1"
-            value={minReview}
-            onChange={(e) => setMinReview(e.target.value)}
-            className="w-36"
-          />
-        </div> */}
      
       {products.map((t: AddProducts) => (
         <div className="p-4 border-slate-300 my-3 flex justify-between gap-5 items-start">
