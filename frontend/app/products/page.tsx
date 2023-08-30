@@ -15,9 +15,8 @@ const Products = () => {
   const [currentpage, setCurrentpage] = useState(1);
   const [totalpage, setTotalpage] = useState(1);
   const [query, setQuery] = useState('');
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
-  const [minReview, setMinReview] = useState('');  
+  const [price, setPrice] = useState('');
+  const [rating, setRating] = useState('');  
   const [products, setProducts] = useState([]);
   const router = useRouter();
 
@@ -32,7 +31,7 @@ const Products = () => {
 
   const searchProducts = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/v1/products?page=${currentpage}&search=${query}&minPrice=${minPrice}&maxPrice=${maxPrice}&minReview=${minReview}`
+        const response = await axios.get(`http://localhost:5000/api/v1/products?page=${currentpage}&search=${query}`
         );
         setProducts(response.data.data)
         setTotalpage(response.data.totalPages)
@@ -44,7 +43,7 @@ const Products = () => {
   const getProducts = async (page: number) => {
    
     try {
-      const response = await axios.get(`http://localhost:5000/api/v1/products?page=${page}&minPrice=${minPrice}&maxPrice=${maxPrice}&minReview=${minReview}`
+      const response = await axios.get(`http://localhost:5000/api/v1/products?page=${page}`
       );
       const data = await response;
       console.log(data);
@@ -74,7 +73,7 @@ const Products = () => {
   else(
    getProducts(currentpage)
   )
-  }, [currentpage,query,minPrice,maxPrice,minReview]);
+  }, [currentpage,query]);
   
   return (
     <>
