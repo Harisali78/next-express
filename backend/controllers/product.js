@@ -6,7 +6,7 @@ const productModel = require("../models/productModel");
 //     data,
 //   });
 // };
-const createProduct = (req, res) => {
+exports.createProduct = (req, res) => {
   console.log(req);
   const data = productModel.create(req.body);
   res.status(201).json({
@@ -15,7 +15,7 @@ const createProduct = (req, res) => {
     data,
   });
 };
-const getProducts = async (req, res) => {
+exports.getProducts = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
     const pageSize = 5;
     const skip = (page - 1) * pageSize;
@@ -80,9 +80,9 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-module.exports = {
-  getProducts,
-  createProduct,
-  deletedProduct,
-  updateProduct,
-};
+// module.exports = {
+//   // // getProducts,
+//   // createProduct,
+//   // deletedProduct,
+//   // updateProduct,
+// };

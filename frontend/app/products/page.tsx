@@ -8,6 +8,8 @@ import ReactStars from 'react-stars'
 import { HiOutlineTrash } from 'react-icons/hi'
 import { useRouter } from "next/navigation";
 import { AddProducts } from "../Model/page";
+import Filter from "../FilterSearch/page";
+import FilterSearch from "../FilterSearch/page";
 
 
 
@@ -41,7 +43,7 @@ const Products = () => {
   const getProducts = async (page: number) => {
    
     try {
-      const response = await axios.get(`http://localhost:5000/api/v1/products?page=${page}`
+      const response = await axios.get(`http://localhost:5000/api/v1/products`
       );
       const data = await response;
       console.log(data);
@@ -103,6 +105,7 @@ const Products = () => {
    >
        Search
    </button>
+   <FilterSearch/>
      
       {products.map((t: AddProducts) => (
         <div className="p-4 border-slate-300 my-3 flex justify-between gap-5 items-start">

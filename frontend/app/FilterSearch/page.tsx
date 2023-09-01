@@ -2,23 +2,32 @@ import React from 'react'
 import { useState } from 'react'
 import axios from 'axios';
 
-const Filter = () => {
+
+const FilterSearch = () => {
     const [price, setPrice] = useState(0);
     const [rating, setRating] = useState(0);
+    const [min, setMin] = useState();
+    const [max, setMax] = useState();
     const [products, setProducts] = useState([]);
 
     const handlePriceChange = (e) => {
-      setPrice(e.target.value);
+      const value = e.target.value;
+      console.log('Price:', value);
+      setPrice(value);
+      FilterProducts(1); // Call the filtering function here
     };
    
     const handleRatingChange = (e) => {
-      setPrice(e.target.value);
-    }; 
+      const value = e.target.value;
+      console.log('Rating:', value);
+      setRating(value);
+      FilterProducts(1);
+    };
 
     const FilterProducts = async (page: number) => {
    
       try {
-        const response = await axios.get(`http://localhost:5000/api/v1/products?page=${page}`
+        const response = await axios.get(`http://localhost:5000/api/v1/products?page=${page}&min=${min}&max=${max}`
         );
         const data = await response;
         console.log(data);
@@ -34,6 +43,8 @@ const Filter = () => {
       <input
         type="range"
         id="rangeInput"
+        min="0"
+        max="100"
         name="rangeInput"
         value={price}
         onChange={handlePriceChange}
@@ -42,6 +53,8 @@ const Filter = () => {
       <input
         type="range"
         id="rangeInput"
+        min="0"
+        max="100"
         name="rangeInput"
         value={rating}
         onChange={handleRatingChange}
@@ -50,4 +63,4 @@ const Filter = () => {
   )
 }
 
-export default Filter;
+export default FilterSearch;
